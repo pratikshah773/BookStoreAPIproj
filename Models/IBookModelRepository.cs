@@ -9,6 +9,12 @@ namespace BookStoreAPIproj.Models
 
         public Task<List<BookModel>> GetallBooksasync();
         public Task<BookModel> GetallBookByIdsasync(int id);
+        public Task<BookModel> AddBookasync(BookModel book);
+        //public Task<BookModel> DeleteBookasync(int id);
+        public Task<BookModel> UpdateBookasync(int id , BookModel book);
+
+
+
 
 
     }

@@ -1,7 +1,6 @@
 ﻿using BookStoreAPIproj.Data;
 using BookStoreAPIproj.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,13 +29,13 @@ namespace BookStoreAPIproj.Repository
                 Description = book.Description
                   
             };
-
-
             return  bookmodel;
           
-
         }
 
+
+
+        //Get All Books 
           public async Task<List<BookModel>> GetallBooksasync()
           {  
             /// we got Books data type from DB , now converting to BookModel Type to return to Controller
@@ -51,6 +50,58 @@ namespace BookStoreAPIproj.Repository
             return Books;
 
           }
+
         
+
+
+
+        
+        public  async  Task<BookModel> AddBookasync(BookModel book) 
+        {
+
+
+            var Book = new Books()
+            {
+                Name = book.Name,
+                Description = book.Description,
+                ID = book.BookID
+
+            };
+
+            
+
+            _bookstoreContext.Add(Book);
+             var id= await _bookstoreContext.SaveChangesAsync();
+            book.BookID = id;
+            return   book; // Returning book id after syncing with updated DB record 
+            
+                    
+        
+        }
+        //public Task<BookModel> DeleteBookasync(int id) { };
+        public async Task<BookModel> UpdateBookasync (int Id, BookModel book) 
+        
+       {
+           var bookToUpdate= await _bookstoreContext.Books.FindAsync(Id);
+
+            if (bookToUpdate != null) 
+            {
+                bookToUpdate.Name = book.Name;
+                bookToUpdate.Description = book.Description;
+                bookToUpdate.ID = Id;
+
+                await _bookstoreContext.SaveChangesAsync();
+
+            };
+            book.BookID = Id;
+                
+             
+            return book;
+
+        }
+
+
+
+
     }
 }
